@@ -442,12 +442,4 @@ Para no dilatar el proceso, prioricé entregar una base sólida. Aun así, hay m
 - Cache con **Redis** (StackExchange.Redis): cachear listados y detalles con claves siguiendo practicas como TTL, good key naming y demas cosas que he aprendido sobre caching.
 - **Pruebas de integración** tenia la intencion de implementarlas con test containers, para practicar tambien estas habilidades, pero lo termine descartando.
 
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
 *Desarrollado con ❤️ y las mejores prácticas de la industria*
