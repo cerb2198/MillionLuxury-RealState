@@ -1,0 +1,454 @@
+{
+	"info": {
+		"_postman_id": "7641f869-97fe-4d9f-95b7-4f458e254f99",
+		"name": "Real Estate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18228415",
+		"_collection_link": "https://unosquare-rd.postman.co/workspace/Team-Workspace~85719fc8-41fa-44ab-814e-21be7825e533/collection/18228415-7641f869-97fe-4d9f-95b7-4f458e254f99?action=share&source=collection_link&creator=18228415"
+	},
+	"item": [
+		{
+			"name": "Healthchecks",
+			"item": [
+				{
+					"name": "Live",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Property Name\",\r\n    \"country\": \"Country\",\r\n    \"city\": \"City\",\r\n    \"street\": \"Street Address\",\r\n    \"zipCode\": 12345,\r\n    \"codeInternal\": 13,\r\n    \"price\": 150000.00,\r\n    \"year\": 2020,\r\n    \"ownerId\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5200/health/live",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5200",
+							"path": [
+								"health",
+								"live"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detailed",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Property Name\",\r\n    \"country\": \"Country\",\r\n    \"city\": \"City\",\r\n    \"street\": \"Street Address\",\r\n    \"zipCode\": 12345,\r\n    \"codeInternal\": 13,\r\n    \"price\": 150000.00,\r\n    \"year\": 2020,\r\n    \"ownerId\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5200/health/detailed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5200",
+							"path": [
+								"health",
+								"detailed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Property Name\",\r\n    \"country\": \"Country\",\r\n    \"city\": \"City\",\r\n    \"street\": \"Street Address\",\r\n    \"zipCode\": 12345,\r\n    \"codeInternal\": 13,\r\n    \"price\": 150000.00,\r\n    \"year\": 2020,\r\n    \"ownerId\": 1\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5200/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5200",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create Property",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Property Name\",\r\n    \"country\": \"Country\",\r\n    \"city\": \"City\",\r\n    \"street\": \"Street Address\",\r\n    \"zipCode\": 12345,\r\n    \"codeInternal\": 14,\r\n    \"price\": 150000.00,\r\n    \"year\": 2020,\r\n    \"ownerId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5200/api/properties/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"properties",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List filtered properties",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Property Name\",\r\n    \"country\": \"Country\",\r\n    \"city\": \"City\",\r\n    \"street\": \"Street Address\",\r\n    \"zipCode\": 12345,\r\n    \"codeInternal\": 13,\r\n    \"price\": 150000.00,\r\n    \"year\": 2020,\r\n    \"ownerId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5200/api/properties?pageNumber=1&pageSize=10&minPrice=5000&country=USA&sortBy=price&sortDescending=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"properties"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "minPrice",
+							"value": "5000"
+						},
+						{
+							"key": "country",
+							"value": "USA"
+						},
+						{
+							"key": "sortBy",
+							"value": "price"
+						},
+						{
+							"key": "sortDescending",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload property image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/carlos.burbano/Downloads/Casas bonitas/images.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5200/api/properties/1/images",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"properties",
+						"1",
+						"images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload property image batch",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "images",
+							"type": "file",
+							"src": [
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/tralalero-tralala.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/213asdasd - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/213asdasd.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/438124098 - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/438124098.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/502426927 - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/502426927.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/6c4c4c918f40b367115b19ecc6a7ae81 - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/6c4c4c918f40b367115b19ecc6a7ae81.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/Diseno-casa-moderna-Casanova-5-600x338 - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/Diseno-casa-moderna-Casanova-5-600x338.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/iasknubasas - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/iasknubasas.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/7181c499f4204100280638b3bedb195c - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/7181c499f4204100280638b3bedb195c.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/safdefsdas - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/safdefsdas.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/Casas-Modernas - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/Casas-Modernas.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/images - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/images.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/89cce779ca1a4199e6edfb9e70869cdb4a6a6aff-3000x2582 - copia.png",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/89cce779ca1a4199e6edfb9e70869cdb4a6a6aff-3000x2582.png",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/554850619 - copia.jpg",
+								"/C:/Users/carlos.burbano/Downloads/Casas bonitas/554850619.jpg"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5200/api/properties/1/images/batch",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"properties",
+						"1",
+						"images",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get job status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5200/api/jobs/4e35ff62-383e-4717-a969-42d7b7552f33",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"jobs",
+						"4e35ff62-383e-4717-a969-42d7b7552f33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chance property price",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newPrice\": 200\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5200/api/properties/11/price",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"properties",
+						"11",
+						"price"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update property",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Carlos property\",\r\n    \"country\": \"Colombia\",\r\n    \"city\": \"Bogotá\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5200/api/properties/11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5200",
+					"path": [
+						"api",
+						"properties",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "realestate-client-secret-2024",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "http://localhost:8080/realms/realestate/protocol/openid-connect/auth",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "http://localhost:8080/realms/realestate/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "realestate-api",
+				"type": "string"
+			},
+			{
+				"key": "refreshRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "tokenRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "authRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "tokenName",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

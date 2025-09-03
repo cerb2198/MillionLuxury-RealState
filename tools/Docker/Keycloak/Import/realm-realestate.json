@@ -1,0 +1,104 @@
+{
+    "realm": "realestate",
+    "enabled": true,
+    "displayName": "Real Estate Realm",
+    "accessTokenLifespan": 3600,
+    "refreshTokenMaxReuse": 0,
+    "clients": [
+        {
+            "clientId": "realestate-api",
+            "enabled": true,
+            "clientAuthenticatorType": "client-secret",
+            "secret": "realestate-client-secret-2024",
+            "directAccessGrantsEnabled": true,
+            "serviceAccountsEnabled": true,
+            "standardFlowEnabled": true,
+            "implicitFlowEnabled": false,
+            "publicClient": false,
+            "protocol": "openid-connect",
+            "redirectUris": [ "*" ],
+            "webOrigins": [ "*" ],
+            "attributes": {
+                "access.token.lifespan": "3600"
+            },
+            "protocolMappers": [
+                {
+                    "name": "audience-mapper",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-audience-mapper",
+                    "config": {
+                        "included.custom.audience": "realestate-api",
+                        "id.token.claim": "false",
+                        "access.token.claim": "true"
+                    }
+                }
+            ]
+        }
+    ],
+    "roles": {
+        "realm": [
+            {
+                "name": "admin",
+                "description": "Administrator role"
+            },
+            {
+                "name": "manager",
+                "description": "Manager role"
+            },
+            {
+                "name": "user",
+                "description": "User role"
+            }
+        ]
+    },
+    "users": [
+        {
+            "username": "admin.user",
+            "enabled": true,
+            "emailVerified": true,
+            "firstName": "Admin",
+            "lastName": "User",
+            "email": "admin@realestate.com",
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "admin123",
+                    "temporary": false
+                }
+            ],
+            "realmRoles": [ "admin", "user" ]
+        },
+        {
+            "username": "john.doe",
+            "enabled": true,
+            "emailVerified": true,
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john@realestate.com",
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "user123",
+                    "temporary": false
+                }
+            ],
+            "realmRoles": [ "user" ]
+        },
+        {
+            "username": "jane.manager",
+            "enabled": true,
+            "emailVerified": true,
+            "firstName": "Jane",
+            "lastName": "Manager",
+            "email": "jane@realestate.com",
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "manager123",
+                    "temporary": false
+                }
+            ],
+            "realmRoles": [ "manager", "user" ]
+        }
+    ]
+}
