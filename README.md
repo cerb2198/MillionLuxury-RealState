@@ -2,6 +2,50 @@
 
 Un sistema API RESTful moderno para la gestión de propiedades inmobiliarias de lujo, desarrollado con .NET 9 y las mejores prácticas de la industria.
 
+## 📚 Tabla de Contenido
+
+- [🌟 Vista General](#-vista-general)
+- [🏗️ Arquitectura del Proyecto](#️-arquitectura-del-proyecto)
+- [🚀 Cómo Ejecutar el Proyecto](#-cómo-ejecutar-el-proyecto)
+  - [🚀 Inicio Rápido](#-inicio-rápido)
+  - [Desarrollo Local](#desarrollo-local-infraestructura-en-docker--api-local)
+  - [Prerrequisitos](#prerrequisitos)
+  - [1. Configurar Servicios de Infraestructura](#1-configurar-servicios-de-infraestructura)
+  - [2. Configurar Base de Datos](#2-configurar-base-de-datos)
+  - [3. Ejecutar la Aplicación](#3-ejecutar-la-aplicación)
+  - [4. Acceder a los Servicios](#4-acceder-a-los-servicios)
+  - [5. Obtener Token de Autenticación](#5-obtener-token-de-autenticación)
+- [🎯 Características Principales](#-características-principales)
+- [📚 Endpoints Principales](#-endpoints-principales)
+- [🌟 ¿Por Qué Este Proyecto Es Excepcional?](#-por-qué-este-proyecto-es-excepcional)
+  - [💎 Un Ejemplo de Arquitectura Limpia Real](#-un-ejemplo-de-arquitectura-limpia-real)
+  - [🔧 Minimal APIs: La Modernidad en Acción](#-minimal-apis-la-modernidad-en-acción)
+  - [🏛️ Inyección de Dependencias: Organización Maestra](#️-inyección-de-dependencias-organización-maestra)
+  - [🛡️ Seguridad Empresarial con Keycloak](#️-seguridad-empresarial-con-keycloak-oauth-20-y-openid-connect-profesional)
+  - [🎯 Domain-Driven Design: Implementación parcial](#-domain-driven-design-implementacion-parcial)
+  - [🗄️ Repositorios: Genéricos + Especializados](#️-repositorios-genéricos--especializados)
+  - [🔄 Casos de Uso: Segregación Perfecta de Responsabilidades](#-casos-de-uso-segregación-perfecta-de-responsabilidades)
+  - [⚡ Procesamiento Asíncrono Profesional](#-procesamiento-asíncrono-profesional)
+  - [🗜️ Compresión de Imágenes: Equilibrio Técnico Perfecto con Brotli](#️-compresión-de-imágenes-equilibrio-técnico-perfecto-con-brotli)
+  - [🔍 Consultas Dinámicas](#-consultas-dinámicas)
+  - [🛡️ Validación con FluentValidation](#️-validación-con-fluentvalidation-validaciones-elegantes)
+  - [🚫 CancellationToken: Operaciones I/O Profesionales y Responsables](#-cancellationtoken-operaciones-io-profesionales-y-responsables)
+  - [⚠️ Manejo Global de Excepciones: RFC 9457 y IExceptionHandler](#️-manejo-global-de-excepciones-rfc-9457-y-iexceptionhandler)
+  - [🗺️ Mappings Limpios con AutoMapper](#️-mappings-limpios-con-automapper-separación-de-responsabilidades-perfecta)
+  - [📋 Swagger: Documentación OpenAPI de Nivel Empresarial](#-swagger-documentación-openapi-de-nivel-empresarial)
+  - [🌐 CORS: Configuración Moderna y Segura](#-cors-configuración-moderna-y-segura-para-integraciones-web)
+  - [🗃️ Entity Framework: Interceptors y Filtros Globales](#️-entity-framework-interceptors-y-filtros-globales)
+  - [🏗️ Fluent API: Diseño de Base de Datos Centrado en Código](#️-fluent-api-diseño-de-base-de-datos-centrado-en-código)
+  - [🔒 Concurrencia Optimista: El Enfoque Pragmático](#-concurrencia-optimista-el-enfoque-pragmático-que-siempre-funciona-)
+  - [🏥 Health Checks: Monitoreo Profesional](#-health-checks-monitoreo-profesional)
+  - [💽 Data Seeding: Moderno y Confiable](#-data-seeding-moderno-y-confiable)
+  - [📝 Records para DTOs: C# Moderno](#-records-para-dtos-c-moderno)
+  - [⚰️ Responsabilidad de Persistencia](#️-responsabilidad-de-persistencia-delegando-responsabilidades-correctamente)
+  - [🎨 .editorconfig: Consistencia de Código](#-editorconfig-consistencia-de-código)
+  - [🐳 Herramientas de Desarrollo](#-herramientas-de-desarrollo)
+- [🎉 El Resultado Final](#-el-resultado-final)
+- [🧪🚀 Lo que me hubiera gustado implementar](#-lo-que-me-hubiera-gustado-implementar-y-dejé-fuera-por-tiempo)
+
 **Aclaracion 🗣️**:
 Se que este proyecto pudo ser ejecutado de manera muy simple, incluso sin ningun tipo de capa, acoplando la logica a los controllers o endpoints; **sin embargo con este proyecto pretendo dar una muestra de mis capacidades tecnicas para desarrollo de alta calidad en entornos productivos, profesionales y vanguardistas.**
 
