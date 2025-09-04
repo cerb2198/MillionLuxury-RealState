@@ -195,25 +195,24 @@ builder.Services.AddApi(builder);
 
 Diseñé cada capa con su propio `DependencyInjection.cs` y **extensiones especializadas** de **responsabilidad única**. Repliqué este patrón en todas las capas para mantener el código fácil de extender y mantener.
 
-## 🛡️ Seguridad Empresarial con Keycloak
+## 🛡️ Seguridad Empresarial con Keycloak: OAuth 2.0 y OpenID Connect Profesional
 
-No me conformé con autenticación básica. Integré **Keycloak** como servidor de identidad profesional para dar un toque profesional y ampliamente tecnico al producto final:
+No me conformé con autenticación básica. Integré **Keycloak** como servidor de identidad (IdP) profesional, proporcionando una implementación completa de **OAuth 2.0** y **OpenID Connect (OIDC)** de nivel empresarial:
 
-- **JWT Bearer Authentication** completamente configurado
-- **Realm personalizado** para el dominio inmobiliario
-- **Swagger UI** con soporte nativo para tokens Bearer
-- **Configuración centralizada** y reutilizable
+**¿Por qué una implementacion con Keycloak distingue mi desarrollo?**
+- **Estándar industrial:** Implementación completa y certificada de OAuth 2.0/OIDC
+- **Demostracion de manejo de servicios IdP:** Demuestro manejo de servicios IdP en este caso con Keycloak, pero tambien con IdPs As Service como Auth0 y Azure Entra ID.
+- **Gestión centralizada:** Usuarios, roles, permisos y políticas en un solo lugar
+- **APIs REST completas:** Gestión programática de todos los aspectos de identidad
 
-```csharp
-options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-    Name = "Authorization",
-    Type = SecuritySchemeType.Http,
-    Scheme = "Bearer",
-    BearerFormat = "JWT",
-    In = ParameterLocation.Header,
-    Description = "Enter the JWT token in the format: Bearer {token}"
-});
-```
+**Implementación técnica:**
+- **JWT Bearer Authentication** completamente configurado y validado
+- **Realm personalizado** para el dominio inmobiliario con configuraciones específicas
+- **Swagger UI** con soporte nativo para tokens Bearer y flujo de autorización
+- **Configuración centralizada** y reutilizable para múltiples entornos
+- **Validación robusta** de tokens con verificación de firma, audiencia y expiración
+
+**Resultado:** Una implementación de seguridad de nivel empresarial que sigue estándares internacionales y proporciona la base para escalar a sistemas complejos de autenticación y autorización.
 
 ## 🎯 Domain-Driven Design: Implementacion parcial
 
@@ -281,9 +280,9 @@ public static async Task<IResult> AddMultiplePropertyImagesAsync(...)
 
 **¿Por qué es una buena implementacion?** Respuesta inmediata `202 Accepted` con endpoint para consultar el progreso. **Exactamente** como funcionan tipicamente las APIs profesionales.
 
-## 🗜️ Compresión de Imágenes: Equilibrio Técnico Perfecto
+## 🗜️ Compresión de Imágenes: Equilibrio Técnico Perfecto con Brotli
 
-Implementé **Brotli compression** para imágenes:
+Implementé **Brotli compression** para imágenes, una decisión técnica estratégica:
 
 ```csharp
 using (var brotliStream = new BrotliStream(compressedStream, CompressionLevel.Optimal))
@@ -292,22 +291,32 @@ using (var brotliStream = new BrotliStream(compressedStream, CompressionLevel.Op
 }
 ```
 
-**El equilibrio perfecto:** Ahorro significativo de espacio en disco sin sobrecargar el servidor.
+**¿Por qué Brotli es superior?**
+- **Optimizado para web:** Diseñado específicamente para contenido web moderno
+- **Soporte nativo:** Integrado en .NET sin dependencias externas
+- **Eficiencia CPU:** Balance óptimo entre compresión y velocidad de procesamiento
+- **Optimzacion en el almacenamiento:** Reduce de manera importante el espacio en disco sin impacto perceptible en rendimiento
+
+**El equilibrio perfecto:** Ahorro significativo de espacio en disco sin sobrecargar el servidor, manteniendo tiempos de respuesta óptimos 😍.
 
 ## 🔍 Consultas Dinámicas:
 
 Sistema de filtrado y ordenamiento completamente dinámico:
 
 ```csharp
-private static IQueryable<Property> ApplySorting(IQueryable<Property> query, string? sortBy, bool descending)
-{
-    return sortBy?.ToLowerInvariant() switch {
-        "price" => descending ? query.OrderByDescending(p => p.Price) : query.OrderBy(p => p.Price),
-        "year" => descending ? query.OrderByDescending(p => p.Year) : query.OrderBy(p => p.Year),
-        // ...más opciones
-        _ => query.OrderByDescending(p => p.CreatedAt)
-    };
-}
+private static IQueryable<Property> ApplySorting(
+       IQueryable<Property> query,
+       string? sortBy,
+       bool descending)
+    {
+        var key = string.IsNullOrWhiteSpace(sortBy)
+            ? SortingOptions.Default
+            : sortBy.Trim().ToLowerInvariant();
+
+        return key switch {
+            var k when k == SortingOptions.Price =>
+                descending ? query.OrderByDescending(p => p.Price)
+                           : query.OrderBy(p => p.Price)
 ```
 
 ## 🛡️ Validación con FluentValidation: Validaciones elegantes
@@ -323,6 +332,184 @@ RuleFor(x => x.Name)
 ```
 
 **Resultado:** Validaciones expresivas, reutilizables y fácilmente testeable.
+
+## 🚫 CancellationToken: Operaciones I/O Profesionales y Responsables
+
+Implementé **CancellationToken** en **todas** las operaciones I/O del sistema, una práctica fundamental para aplicaciones empresariales robustas:
+
+```csharp
+public async Task<IResult> CreatePropertyAsync(
+    CreatePropertyBuildingRequest request,
+    ICreatePropertyBuildingUseCase useCase,
+    CancellationToken cancellationToken) // ✅ Siempre presente
+{
+    var response = await useCase.ExecuteAsync(request, cancellationToken);
+    return Results.Created($"/{ApiRoutes.PropertyResource}{response.Id}", response);
+}
+```
+
+**Ventajas técnicas y de negocio que se ganan:**
+- **Mantener un sistema responsivo:** Cancelación inmediata cuando el cliente se desconecta
+- **Evitamos mal uso de recursos:** Liberación automática de conexiones de BD y memoria
+
+**Implementación consistente:**
+Este patron es implementado y prograpado a lo largo de todas las operaciones I/O
+
+**El resultado:** Un sistema que respeta los recursos del servidor y permite una gestion optima de los recursos, mejorando el impacto en rendimiento.
+
+## ⚠️ Manejo Global de Excepciones: RFC 9457 y IExceptionHandler
+
+Implementé un sistema de manejo de errores profesional siguiendo el estándar **RFC 9457 (Problem Details)** usando el moderno **IExceptionHandler** de .NET core:
+
+```csharp
+internal sealed class GlobalExceptionHandler(
+    ILogger<GlobalExceptionHandler> _logger
+) : IExceptionHandler
+{
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,
+        Exception exception,
+        CancellationToken cancellationToken)
+    {
+        _logger.LogError(
+            exception, "Exception occurred: {Message}", exception.Message);
+
+        var (statusCode, title) = GetExceptionDetails(exception);
+```
+
+**¿Por qué RFC 9457 es importante?**
+- **Estándar web internacional:** Formato universalmente reconocido para errores HTTP
+- **Estructura consistente:** type, title, status, detail, instance en todas las respuestas
+- **Trazabilidad:** Cada error incluye identificadores únicos para debugging
+- **Experiencia del desarrollador:** Errores claros
+
+**Ejemplo de respuesta de error:**
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc9457#section-4.2",
+  "title": "Validation Error",
+  "status": 400,
+  "detail": "Property name is required and must be between 3 and 100 characters",
+  "instance": "/api/properties",
+  "traceId": "00-8b2c4f3e1a5d6b7c-9e8f7a6b5c4d3e2f-01"
+}
+```
+
+
+**Resultado:** Respuestas de error consistentes, informativas y estandardizadas que facilitan la integración y el debugging tanto para desarrolladores internos como para consumidores externos de la API.
+
+## 🗺️ Mappings Limpios con AutoMapper: Separación de Responsabilidades Perfecta
+
+Implementé un patrón limpio y organizado para los mappings usando **AutoMapper**, manteniendo la separación de responsabilidades y la mantenibilidad del código:
+
+```csharp
+public class AddressProfile : Profile
+{
+    public AddressProfile()
+    {
+        CreateMap<CreatePropertyBuildingRequest, Address>()
+            .ConstructUsing(src => new Address(src.Country, src.City, src.Street, src.ZipCode));
+    }
+}
+```
+
+**¿Por qué uso este patrón?**
+- **Profiles organizados:** Cada dominio tiene su propio Profile para mantener cohesión
+- **Mapping explícito:** Configuraciones claras y testeable de transformaciones complejas
+- **Performance optimizada:** AutoMapper compila las expresiones en runtime para máxima velocidad
+- **Inmutabilidad preservada:** Mapeo directo a records inmutables sin boilerplate
+- **Validación en compilación:** Detección temprana de mappings incorrectos o faltantes
+
+Ademas ni siquiera preocupo a la logica de manejar directamente con el mapper, para eso genere el MappingExtensions:
+```csharp
+public static class MappingExtensions
+{
+    public static Property ToProperty(this CreatePropertyBuildingRequest request, IMapper mapper)
+    {
+        return mapper.Map<Property>(request);
+    }
+}
+```
+
+**Organización por capas:**
+```csharp
+// Capa Application - Profiles centralizados
+public class ApplicationMappingProfile : Profile { }
+
+// Registro limpio en DI
+services.AddAutoMapper(typeof(ApplicationMappingProfile));
+```
+
+**Casos de uso optimizados:**
+```csharp
+public async Task<CreatePropertyResponse> ExecuteAsync(
+    CreatePropertyBuildingRequest request,
+    CancellationToken cancellationToken)
+{
+    // Mapping limpio y expresivo
+    var property = request.ToProperty(_mapper);
+    
+    // Lógica de negocio
+    property = await _repository.AddAsync(property, cancellationToken);
+    await _repository.SaveChangesAsync(cancellationToken);
+    
+    // Response mapping
+    return property.ToDto();
+}
+```
+
+**Beneficios del patrón:**
+- **Mantenibilidad:** Cambios en DTOs no afectan lógica de negocio
+- **Testabilidad:** Mappings aislados y fácilmente testeable
+- **Expresividad:** Código autodocumentado y fácil de entender
+
+**Resultado:** Transformaciones de datos limpias, eficientes y mantenibles que respetan los principios de arquitectura limpia y facilitan la evolución del sistema.
+
+## 📋 Swagger: Documentación OpenAPI de Nivel Empresarial
+
+Implementé una configuración completa de **Swagger/OpenAPI** que va más allá de la documentación básica, proporcionando una experiencia de integración profesional:
+
+```csharp
+public static void AddSwaggerConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddEndpointsApiExplorer();
+
+        services.AddSwaggerGen(options => {
+            options.SwaggerDoc("v1", new OpenApiInfo {
+                Title = "Real Estate API",
+                Version = "v1.0.0",
+                Description = "API for the million luxury real estate application.",
+            });
+            ...
+```
+
+**¿Por qué Swagger es crucial en el desarrollo moderno?**
+- **Estándar OpenAPI:** Especificación universalmente adoptada para documentar APIs REST
+- **Integración automática:** Generación automática de documentación desde el código
+- **Testing interactivo:** Interfaz web para probar endpoints sin herramientas externas, por si te da pereza usar Postman.
+
+## 🌐 CORS: Configuración Moderna y Segura para Integraciones Web
+
+Implementé una configuración **CORS (Cross-Origin Resource Sharing)** moderna, dinámica y segura que balancea flexibilidad de desarrollo con seguridad productiva:
+
+```csharp
+services.AddCors(options => {
+            options.AddPolicy(Environments.Development,
+                policy => {
+                    policy
+                        .WithOrigins(corsSettings.DevelopmentConfig.Origins)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .SetPreflightMaxAge(corsSettings.DevelopmentConfig.PreflightMaxAge);
+                });
+        });
+```
+
+**¿Por qué la aplique?**
+- **Configuración por entorno:** Diferentes políticas para desarrollo, staging y producción
+- **Seguridad granular:** Control específico de orígenes, métodos y headers permitidos
+- **Flexibilidad controlada:** Soporte para subdominios dinámicos sin comprometer seguridad
+- **Compatibilidad con autenticación:** AllowCredentials para soporte de JWT y cookies
+- **Mantenibilidad:** Configuración centralizada y fácilmente modificable
 
 ## 🗃️ Entity Framework: Interceptors y Filtros Globales
 
@@ -344,14 +531,95 @@ builder.Entity(softDeleteEntity).HasQueryFilter(GenerateQueryFilterLambda(softDe
 
 **¿El resultado?** Las entidades eliminadas **nunca** aparecen en consultas sin configuración manual. Transparencia total.
 
+## 🏗️ Fluent API: Diseño de Base de Datos Centrado en Código
+
+Implementé un enfoque **Code-First** profesional usando **Fluent API** de Entity Framework, manteniendo el diseño de la base de datos completamente controlado desde código con configuraciones explícitas y organizadas:
+
+```csharp
+public sealed class PropertyConfiguration : IEntityTypeConfiguration<Property>
+{
+    private const string PriceColumnType = "decimal(18,2)";
+    public void Configure(EntityTypeBuilder<Property> builder)
+    {
+        builder
+            .HasKey(x => x.Id);
+
+        builder
+            .Property(x => x.RowVersion)
+            .IsRowVersion();
+
+        builder
+            .Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(200);
+            
+        ...
+    }
+}
+```
+
+**¿Por qué prefiero Fluent API sobre Data Annotations?**
+- **Separación de responsabilidades:** Configuración de BD separada del modelo de dominio
+- **Flexibilidad completa:** Control total sobre tipos de columnas, índices y relaciones
+- **Mantenibilidad:** Configuraciones centralizadas y organizadas por entidad
+- **Reutilización:** Configuraciones comunes compartidas entre entidades
+
+**Configuración modular de Value Objects:**
+```csharp
+public static class AddressConfiguration
+{
+    public static void ConfigureAddress<TEntity>(EntityTypeBuilder<TEntity> builder, string navigationName)
+        where TEntity : class
+    {
+        builder.OwnsOne(typeof(Address), navigationName, addrBuilder => {
+            addrBuilder.Property("Country").HasMaxLength(MaxCountryLength).IsRequired();
+            addrBuilder.Property("City").HasMaxLength(MaxCityLength).IsRequired();
+            // Configuración completa y reutilizable
+        });
+    }
+}
+```
+
+**Optimizaciones de rendimiento implementadas:**
+- **Índices estratégicos:** En columnas de filtrado frecuente (Price, Year, CodeInternal)
+- **Tipos de datos precisos:** `decimal(18,2)` para precios, `VARBINARY(MAX)` para imágenes
+- **Relaciones optimizadas:** DeleteBehavior.Restrict para integridad, Cascade para dependencias
+- **Restricciones apropiadas:** MaxLength en strings para evitar fragmentación
+
+**Resultado:** Un esquema de base de datos robusto, performante y completamente mantenido desde código, facilitando migraciones controladas y evolución del modelo de datos sin comprometer la integridad o el rendimiento.
+
+## 🔒 Concurrencia Optimista:
+
+Implementé **concurrencia optimista** con `RowVersion` en todas las entidades principales porque, para ser sincero, la he aplicado en varios proyectos y es un enfoque que funciona muy bien.
+
+```csharp
+public sealed class PropertyConfiguration : IEntityTypeConfiguration<Property>
+{
+    public void Configure(EntityTypeBuilder<Property> builder)
+    {
+        builder
+            .Property(x => x.RowVersion)
+            .IsRowVersion(); // acá EFC ayuda mucho
+    }
+}
+```
+
+**¿Por qué optimista y no pesimista?** Porque en mi experiencia, funciona de maravilla:
+
+- **Menor complejidad:** No necesitas manejar locks ni deadlocks complicados
+- **Mejor rendimiento:** Las transacciones no bloquean recursos innecesariamente 
+- **Escala naturalmente:** Perfecto para aplicaciones web donde los conflictos son raros
+- **Fácil de debuggear:** Cuando hay conflicto, simplemente obtienes una excepción clara
+- **Cliente decide como presentar la informacion:** Puedes mostrar un mensaje amigable: "Alguien más editó esto, ¿quieres intentar de nuevo?" todo en manos de los clientes.
+
 ## 🏥 Health Checks: Monitoreo Profesional
 
 En diseño he implementacion de sistemas no solo nos interesa saber si "está funcionando", sino **cómo está funcionando**:
 
 ```csharp
 group.MapHealthChecks("/detailed", new HealthCheckOptions {
-    ResponseWriter = WriteDetailedResponseAsync
-});
+            ResponseWriter = WriteDetailedResponseAsync
+        })
 ```
 
 ## 💽 Data Seeding: Moderno y Confiable
